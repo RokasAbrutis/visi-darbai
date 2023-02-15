@@ -1,0 +1,21 @@
+table, tr, th {
+    border: 1px black solid;
+    border-collapse: collapse;
+    background-color: white;
+    /* width: 900px; */
+    margin: auto;
+    font-size: 1.2em;
+
+}
+
+* {
+    text-align: center;
+}
+body {
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+
+}
+.title {
+    color:white;
+    font-size: 2em;
+}

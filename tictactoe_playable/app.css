@@ -1,0 +1,29 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+h2 {
+    text-align: center;
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 70px;
+    font-size: 3em;
+}
+td {
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    font-size: 70px;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+    background-color: white;
+}
+
+body {
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+}

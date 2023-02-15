@@ -1,0 +1,96 @@
+* {
+     margin: 0;
+}
+
+.sumustekas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bandele-top {
+    width: 200px;
+    height: 40px;
+    /* border: 1px solid #e5b05a; */
+    border-radius: 30px 30px 10px 10px;
+    background-color: #e5b05a;
+    box-shadow: inset 0px -3px 0px 1px #ce9e51;
+    margin: auto;
+}
+
+.suris {
+    width: 220px;
+    height: 10px;
+    background-color: #f2c120;
+    box-shadow: inset 0px -1px 0px 1px #e1b31d;
+    margin: auto;
+}
+
+.kecupas {
+    width: 180px;
+    height: 20px;
+    background-color: #dd3710;
+    margin: auto;
+}
+
+.svogunas {
+    width: 150px;
+    height: 2px;
+    background-color: #a039bf;
+    margin: auto;
+    border-top: 15px dotted #b361cc;
+}
+
+.mesa {
+    width: 50px;
+    height: 50px;
+    background-color: #74380d;
+    border-radius: 50%;
+    position: relative;
+    float: left;
+    left: 75px;
+}
+
+.agurkelis {
+    width: 170px;
+    height: 20px;
+    background-color: #3ac67d;
+    border-radius: 0px 0px 20px 20px;
+    position: relative;
+    top: 50px;
+    margin: auto;
+    box-shadow: inset 0px -4px 0px 0px #2d9961;
+}
+
+.mesos-paplotelis {
+    width: 220px;
+    height: 20px;
+    background-color: #ad370b;
+    border-radius: 10px 10px;
+    position: relative;
+    top: 50px;
+    box-shadow: inset 0px -1px 0px 0px #9b310a;
+    margin: auto;
+}
+
+.bandele-bottom {
+    width: 200px;
+    height: 30px;
+    background-color: #e5b05a;
+    position: relative;
+    top: 50px;
+    margin: auto;
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: inset 0px 3px 0px 0px #ce9e51;
+}
+
+.lekste {
+    width: 300px;
+    height: 20px;
+    background-color: #656565;
+    position: relative;
+    top: 50px;
+    margin: auto;
+    border-radius: 0px 0px 30px 30px;
+}

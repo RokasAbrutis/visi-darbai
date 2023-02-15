@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudoku</title>
+    <style>
+      #sudoku {
+        margin: 20px auto;
+        border-collapse: collapse;
+      }
+      #sudoku td {
+        border: 1px solid brown;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      #sudoku tr:first-child td {
+        border-top-width: 2px;
+      }
+      #sudoku tr:nth-child(3n) td {
+        border-bottom-width: 2px;
+      }
+
+      #sudoku td:first-child {
+        border-left-width: 2px;
+      }
+
+      #sudoku td:nth-child(3n) {
+        border-right-width: 2px;
+      }
+
+      #sudoku td.klaida {
+        background-color: #ffcccc;
+      }
+
+      #sudoku td.paskutinis {
+        background-color: #ccffcc;
+        color: #aaa;
+      }
+
+      #sudoku td.aktyvus {
+        background-color: #f8f07b;
+        font-weight: 800;
+      }
+
+      #sudoku_valdymas {
+        max-width: calc(40px * 9);
+        border: 2px solid brown;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: space-between;
+      }
+      #sudoku_valdymas button {
+        width: 30px;
+        height: 30px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: font-size 0.3s;
+      }
+      #sudoku_valdymas button:hover {
+        font-size: large;
+      }
+      #sudoku_valdymas button:first-child {
+        color: #cc3333;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="lentele">
+      <table id="sudoku">
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="sudoku_valdymas">
+        <button>&times;</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+      </div>
+    </div>
+
+    <script>
+      function yraKlaidu(zaidimas, i, j) {
+        let klaida = false;
+        if (zaidimas[i][j] != "") {
+          for (let k = 0; k < 9; k++) {
+            // tikrinti eilutės duomenis
+            if (j != k && zaidimas[i][j] == zaidimas[i][k]) {
+              klaida = true;
+              break;
+            }
+
+            // tikrinti stulpelio duomenis
+            if (i != k && zaidimas[i][j] == zaidimas[k][j]) {
+              klaida = true;
+              break;
+            }
+
+            // tikrinti bloko duomenis
+            let m = Math.floor(k / 3); // 0, 0, 0, 1, 1, 1, 2, 2, 2 eilutes
+            let n = k % 3; // 0,1,2, 0,1,2, 0,1,2 stulepiai
+            m += Math.floor(i / 3) * 3;
+            n += Math.floor(j / 3) * 3;
+
+            if (!(i == m && j == n) && zaidimas[i][j] == zaidimas[m][n]) {
+              klaida = true;
+              break;
+            }
+          }
+        }
+
+        return klaida;
+      }
+
+      function sudoku(zaidimas) {
+        // let eilutes = document
+        //   .getElementById("sudoku")
+        //   .getElementsByTagName("tr");
+
+        // nustatome ar lentelėje yra klaidų
+        let yra_klaidų = false;
+        for (let i = 0; i < 9; i++) {
+          for (let j = 0; j < 9; j++) {
+            yra_klaidų = yraKlaidu(zaidimas, i, j);
+            if (yra_klaidų) break;
+          }
+          if (yra_klaidų) break;
+        }
+
+        // generuojama lentelė
+        //let lentele_html = "";
+        //lentele_html += '<table class="sudoku"><tbody>';
+
+        for (let i = 0; i < 9; i++) {
+          //lentele_html += "<tr>";
+          for (let j = 0; j < 9; j++) {
+            let klaida = false;
+            let paskutinis = false;
+            let liko_skaiciai = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+            // let liko_skaiciai_eilute = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            // let liko_skaiciai_stulpelis = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            // let liko_skaiciai_blokas = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+            if (yra_klaidų) {
+              // kalidų paieška
+              klaida = yraKlaidu(zaidimas, i, j);
+            } else if (zaidimas[i][j] == "") {
+              // paskutinio langelio tikrinimas
+              for (let k = 0; k < 9; k++) {
+                // tikrinti eilutės duomenis
+                liko_skaiciai = liko_skaiciai.filter(
+                  (e) => e != zaidimas[i][k]
+                );
+
+                // tikrinti stulpelio duomenis
+                liko_skaiciai = liko_skaiciai.filter(
+                  (e) => e != zaidimas[k][j]
+                );
+
+                // tikrinti bloko duomenis
+                let m = Math.floor(k / 3); // 0, 0, 0, 1, 1, 1, 2, 2, 2 eilutes
+                let n = k % 3; // 0,1,2, 0,1,2, 0,1,2 stulepiai
+                m += Math.floor(i / 3) * 3;
+                n += Math.floor(j / 3) * 3;
+
+                liko_skaiciai = liko_skaiciai.filter(
+                  (e) => e != zaidimas[m][n]
+                );
+              }
+
+              if (liko_skaiciai.length == 1) {
+                paskutinis = liko_skaiciai[0];
+              } else if (liko_skaiciai.length == 0) {
+                klaida = true;
+              }
+            }
+
+            // let langelis = eilutes[i].getElementsByTagName("td")[j];
+            let langelis = langeliai[i * 9 + j];
+            langelis.className = "";
+
+            if (klaida) {
+              //lentele_html += '<td class="klaida">' + zaidimas[i][j] + "</td>";
+              langelis.innerText = zaidimas[i][j];
+              langelis.className = "klaida";
+            } else if (paskutinis) {
+              //lentele_html += '<td class="paskutinis">' + paskutinis + "</td>";
+              langelis.innerText = paskutinis;
+              langelis.className = "paskutinis";
+            } else {
+              //lentele_html += "<td>" + zaidimas[i][j] + "</td>";
+              langelis.innerText = zaidimas[i][j];
+            }
+
+            if (i * 9 + j === aktyvus_langelis) {
+              langelis.className = "aktyvus";
+
+              if (zaidimas[i][j] == "") {
+                mygtukai[0].style.visibility = "hidden";
+
+                for (let nr = 1; nr <= 9; nr++) {
+                  if (liko_skaiciai.includes(nr)) {
+                    mygtukai[nr].style.visibility = "visible";
+                  } else {
+                    mygtukai[nr].style.visibility = "hidden";
+                  }
+                }
+              } else {
+                mygtukai[0].style.visibility = "visible";
+
+                for (let nr = 1; nr <= 9; nr++) {
+                  mygtukai[nr].style.visibility = "hidden";
+                }
+              }
+            }
+          }
+          //lentele_html += "</tr>";
+        }
+        //lentele_html += "</tbody></table>";
+
+        //return lentele_html;
+      }
+
+      function langelioPaspaudimas(nr) {
+        // let eilute = Math.floor(nr / 9);
+        // let stulpelis = nr % 9;
+
+        aktyvus_langelis = nr;
+
+        sudoku(zaidimas);
+
+        // console.log(
+        //   "paspaudė langelį - " + nr + " " + eilute + "X" + stulpelis
+        // );
+      }
+
+      function mygtukoPaspaudimas(nr) {
+        // console.log("paspaudė mygtuką - " + nr);
+        if (aktyvus_langelis) {
+          let eilute = Math.floor(aktyvus_langelis / 9);
+          let stulpelis = aktyvus_langelis % 9;
+
+          if (nr == 0) {
+            zaidimas[eilute][stulpelis] = "";
+          } else {
+            zaidimas[eilute][stulpelis] = nr;
+          }
+          // console.log("aktyvus langelis - " + aktyvus_langelis);
+        }
+
+        sudoku(zaidimas);
+      }
+
+      function initSudoku() {
+        // globalus kintamasis
+        aktyvus_langelis = false;
+
+        // globalus langelių sąrašas
+        langeliai = document
+          .getElementById("sudoku")
+          .getElementsByTagName("td");
+
+        for (let i = 0; i < langeliai.length; i++) {
+          langeliai[i].onclick = function () {
+            langelioPaspaudimas(i);
+          };
+        }
+
+        // globalus mygtukų sąrašas
+        mygtukai = document
+          .getElementById("sudoku_valdymas")
+          .getElementsByTagName("button");
+
+        for (let i = 0; i < mygtukai.length; i++) {
+          mygtukai[i].onclick = function () {
+            mygtukoPaspaudimas(i);
+          };
+        }
+
+        sudoku(zaidimas);
+      }
+
+      let zaidimas = [
+        [8, 3, "", "", "", "", 6, "", ""],
+        [6, "", "", 9, "", 4, 5, "", ""],
+        ["", "", 9, "", 1, "", 8, 7, 2],
+        ["", "", "", 8, "", 2, 4, 6, ""],
+        ["", "", "", 7, "", "", "", 8, 1],
+        ["", "", "", "", "", "", "", 3, 5],
+        ["", 1, 5, "", 7, 8, "", "", ""],
+        ["", "", "", "", 6, "", 3, 4, 7],
+        ["", 6, "", 4, "", "", "", "", ""],
+      ];
+
+      // Eksperimentai
+      // Žaidimo matricą paversti vieno lygio masyvu.
+      // padaryti pradinius fiksuotus skaičius.
+      // padaryti "undo" funkciją (grįžti atgan vienu arba keliais žingsniai)
+      // padaryti skaičių pasižymėjimą langelyje
+      // mygtukas ištrinti viskam kas buvo parašyta, su pranešimu ar tikrai norite tai daryti.
+      // išskirti kita spalva jau išspręstas dalis (eilutes, stulpelius, blokus)
+
+      initSudoku();
+      // pakeitimas
+    </script>
+  </body>
+</html>
